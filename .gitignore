@@ -1,0 +1,5 @@
+none_modules/
+.env
+.dist/
+venv/
+__pycache__/
