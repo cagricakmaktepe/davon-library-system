@@ -8,5 +8,5 @@
 7. git branch feature/isim ile feature branchimizi oluşturuyoruz. 
 8. burada psuh yaptığımızda github üzerinden pr oluşur onnunla merge ederiz.
 9. git pull origin develop ile de locale çekeriz. 
-
+>>> hotfix düzenlemesi
 
