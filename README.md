@@ -1,4 +1,5 @@
 #Davon Library System
+<<<<<<< HEAD
 bu yazı eğitim amaçlı
 1. Öncelikle git init ile local repomuzu oluşturuyoruz. 
 2. echo ile bir README.md dosyası oluşturalım bu dosyayı add,commit ile kaydedilim.
@@ -9,4 +10,5 @@ bu yazı eğitim amaçlı
 7. git branch feature/isim ile feature branchimizi oluşturuyoruz. 
 8. burada psuh yaptığımızda github üzerinden pr oluşur onnunla merge ederiz.
 9. git pull origin develop ile de locale çekeriz. 
+
 
