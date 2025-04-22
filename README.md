@@ -9,4 +9,4 @@
 8. burada psuh yaptığımızda github üzerinden pr oluşur onnunla merge ederiz.
 9. git pull origin develop ile de locale çekeriz. 
 >>> hotfix düzenlemesi
-
+>>> v1.0.0 release hazırlığı
