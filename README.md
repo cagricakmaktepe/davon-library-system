@@ -1,6 +1,4 @@
 #Davon Library System
-<<<<<<< HEAD
-bu yazı eğitim amaçlı
 1. Öncelikle git init ile local repomuzu oluşturuyoruz. 
 2. echo ile bir README.md dosyası oluşturalım bu dosyayı add,commit ile kaydedilim.
 3. master branchimizi git branch  -m master main ile maine değiştirelim
