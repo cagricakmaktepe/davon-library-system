@@ -1,29 +1,14 @@
-import Link from 'next/link';
-import styles from './page.module.css';
+'use client';
 
-export default function HomePage() {
-  return (
-    <div>
-      <nav>
-        <Link href="/">Davon Library</Link>
-        <ul>
-          <li>
-            <Link href="/users/register">Register</Link>
-          </li>
-          <li>
-            <Link href="/users/login">Login</Link>
-          </li>
-          <li>
-            <Link href="/users">Users</Link>
-          </li>
-        </ul>
-      </nav>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1>Welcome to the Davon Library</h1>
-          <p>Manage users and books with ease.</p>
-        </div>
-      </main>
-    </div>
-  );
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function RootPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/users/login');
+  }, [router]);
+
+  return null; // Or a loading spinner
 }

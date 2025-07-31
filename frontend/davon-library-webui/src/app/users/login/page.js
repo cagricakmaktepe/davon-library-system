@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
-import styles from '../../page.module.css';
+import '@/app/globals.css'; // Using globals for simplicity
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -35,45 +35,35 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <nav>
-        <Link href="/">Davon Library</Link>
-        <ul>
-          <li>
-            <Link href="/users/register">Register</Link>
-          </li>
-          <li>
-            <Link href="/users">Users</Link>
-          </li>
-        </ul>
-      </nav>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1>Login</h1>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '300px' }}>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              style={{ padding: '0.5rem' }}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              style={{ padding: '0.5rem' }}
-            />
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button type="submit" style={{ padding: '0.7rem', cursor: 'pointer' }}>Login</button>
-          </form>
-        </div>
-      </main>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div style={{ width: '320px', padding: '2rem', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', borderRadius: '8px', background: '#fff' }}>
+        <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h1>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            style={{ padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px' }}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            style={{ padding: '0.75rem', border: '1px solid #ddd', borderRadius: '4px' }}
+          />
+          {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+          <button type="submit" style={{ padding: '0.75rem', cursor: 'pointer', background: '#0070f3', color: '#fff', border: 'none', borderRadius: '4px', fontWeight: 'bold' }}>Login</button>
+        </form>
+        <p style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+          Don't have an account? <Link href="/users/register">Sign Up</Link>
+        </p>
+      </div>
     </div>
   );
 }
