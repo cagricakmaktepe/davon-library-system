@@ -1,0 +1,42 @@
+### **Project Foundation & Version Control**
+
+*   **Version Control:** We will use **Git** with the **Git Flow** methodology (`main` and `develop` branches). All work will be done in feature branches.
+*   **Repository:** The project will be hosted on GitHub in a repository named `davon-library-system`.
+*   **Project Structure:** We will maintain a clear directory structure at the root:
+    *   `davon-library-landing-page/`: For the static landing page (HTML/CSS).
+    *   `davon-library-webui/`: For the React/Next.js frontend application.
+    *   A dedicated directory for the Java backend.
+    *   `README.md`: For project documentation.
+    *   `.gitignore`: Configured for a full-stack web project.
+*   **Modeling:** We will use **UML** (Class, Use Case, Sequence, State diagrams) to design and document the system's architecture and workflows before and during implementation.
+
+### **Core Technologies**
+
+*   **Backend:**
+    *   **Language:** Java (JDK 24.0.2)
+    *   **Framework:** Quarkus (3.6.4)
+    *   **Build Tool:** Apache Maven
+*   **Frontend:**
+    *   **Landing Page:** Static **HTML** and **CSS**.
+    *   **Web App:** **React**, enhanced with the **Next.js** framework for features like Server-Side Rendering (SSR) and API routes.
+*   **Database:**
+    *   **System:** Microsoft SQL Server (MSSQL)
+    *   **Interaction:** The Java backend will connect to MSSQL via **JDBC** using the **Data Access Object (DAO)** pattern.
+*   **Deployment:**
+    *   **Containerization:** The entire application stack (Frontend, Backend, Database) will be containerized using **Docker** and orchestrated with **Docker Compose**.
+    *   **CI/CD:** A CI/CD pipeline will be set up using **GitHub Actions**.
+
+### **Development Standards**
+
+*   **Backend (Java/Quarkus):**
+    *   **APIs:** RESTful endpoints will be built using JAX-RS (`@Path`, `@GET`, `@POST`).
+    *   **Dependency Injection:** We will use CDI (`@ApplicationScoped`, `@Inject`, etc.).
+    *   **Code Style:** Standard Java naming conventions and OOP principles will be followed. We will use **Lombok** (`@Data`, `@Builder`, etc.) to reduce boilerplate.
+*   **Frontend (React/Next.js):**
+    *   **Components:** We will build the UI using functional React components and **Hooks** (`useState`, `useEffect`).
+    *   **State Management:** State will be managed using React Hooks and the **Context API** for global state.
+    *   **Styling:** We will use modern CSS techniques like CSS Modules, Flexbox, and Grid for responsive design.
+*   **Testing:**
+    *   A comprehensive testing strategy will be implemented.
+    *   **Backend:** Unit tests will be written with **JUnit 5**.
+    *   **Full-Stack:** We will perform API testing, integration testing, and end-to-end system testing.
