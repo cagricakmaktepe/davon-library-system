@@ -1,0 +1,68 @@
+graph TD
+    Member["👤 Member"]
+    Admin["👨‍💼 Admin"]
+    System["🖥️ System"]
+    EmailService["📧 Email Service"]
+    
+    %% Registration Use Cases
+    Register["Register Account"]
+    ValidateEmail["Validate Email Format"]
+    ValidatePassword["Validate Password Requirements"]
+    CreateAccount["Create User Account"]
+    
+    %% Authentication Use Cases
+    Login["Login to System"]
+    ValidateCredentials["Validate User Credentials"]
+    CreateSession["Create User Session"]
+    RememberMe["Enable Remember Me"]
+    Logout["Logout from System"]
+    TerminateSession["Terminate Session"]
+    
+    %% Profile Management
+    ViewProfile["View Profile"]
+    UpdateProfile["Update Profile Information"]
+    ChangePassword["Change Password"]
+    
+    %% Session Management
+    CheckSession["Check Session Validity"]
+    RefreshSession["Refresh Session"]
+    SessionTimeout["Handle Session Timeout"]
+    
+    %% Relationships
+    Member --> Register
+    Member --> Login
+    Member --> ViewProfile
+    Member --> UpdateProfile
+    Member --> ChangePassword
+    Member --> Logout
+    
+    Admin --> Login
+    Admin --> ViewProfile
+    Admin --> UpdateProfile
+    Admin --> ChangePassword
+    Admin --> Logout
+    
+    Register --> ValidateEmail
+    Register --> ValidatePassword
+    Register --> CreateAccount
+    
+    Login --> ValidateCredentials
+    Login --> CreateSession
+    Login --> RememberMe
+    
+    Logout --> TerminateSession
+    
+    CreateSession --> CheckSession
+    CheckSession --> RefreshSession
+    CheckSession --> SessionTimeout
+    
+    %% System interactions
+    System -.-> ValidateEmail
+    System -.-> ValidatePassword
+    System -.-> CreateAccount
+    System -.-> ValidateCredentials
+    System -.-> CreateSession
+    System -.-> TerminateSession
+    System -.-> CheckSession
+    System -.-> RefreshSession
+    System -.-> SessionTimeout

@@ -1,0 +1,80 @@
+classDiagram
+    class Book {
+        +Long bookId
+        +String title
+        +String author
+        +String description
+        +String language
+        +Integer pageCount
+        +String publisher
+        +Date dateAdded
+        +Date lastUpdated
+        +Long categoryId
+        +Integer totalCopies
+        +Integer availableCopies
+        +String isbn
+        +Boolean isActive
+        +updateAvailability() void
+        +calculateLoanPeriod() Integer
+        +isAvailable() Boolean
+        +getQueuePosition() Integer
+    }
+    
+    class Category {
+        +Long categoryId
+        +String deweyCode
+        +String categoryName
+        +String description
+        +Date createdDate
+        +Boolean isActive
+        +validateDeweyCode() Boolean
+        +getBooksByCategory() List
+    }
+    
+    class BookCopyManager {
+        +Long managerId
+        +Long bookId
+        +Integer totalCopies
+        +Integer availableCopies
+        +Integer borrowedCopies
+        +Integer reservedCopies
+        +Date lastUpdated
+        +updateCopyCount() void
+        +borrowCopy() Boolean
+        +returnCopy() void
+        +calculateAvailability() Integer
+        +validateCopyCount() Boolean
+    }
+    
+    class BookSearch {
+        +Long searchId
+        +String searchTerm
+        +String searchType
+        +Date searchDate
+        +Long userId
+        +Integer resultCount
+        +searchByTitle() List
+        +searchByAuthor() List
+        +searchByCategory() List
+        +searchByKeyword() List
+        +filterByAvailability() List
+    }
+    
+    class ReadingListItem {
+        +Long itemId
+        +Long memberId
+        +Long bookId
+        +Date addedDate
+        +Integer priority
+        +String notes
+        +Boolean isCompleted
+        +updatePriority() void
+        +markAsCompleted() void
+        +addNotes() void
+    }
+    
+    Book "1" --> "1" Category
+    Book "1" --> "1" BookCopyManager
+    Book "1" --> "0..*" ReadingListItem
+    Book "1" --> "0..*" BookSearch
+    Category "1" --> "0..*" Book

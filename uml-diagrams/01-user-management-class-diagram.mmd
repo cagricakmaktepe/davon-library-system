@@ -1,0 +1,82 @@
+classDiagram
+    class User {
+        +Long userId
+        +String email
+        +String passwordHash
+        +String firstName
+        +String lastName
+        +Date registrationDate
+        +Date lastLoginDate
+        +Boolean isActive
+        +login() Boolean
+        +logout() void
+        +updateProfile() void
+        +changePassword() Boolean
+    }
+    
+    class Member {
+        +Integer currentBorrowCount
+        +Integer currentReservationCount
+        +Double totalPenalties
+        +Date lastWarningDate
+        +borrowBook() BorrowRecord
+        +reserveBook() Reservation
+        +returnBook() ReturnRecord
+        +renewBook() Renewal
+        +payPenalty() void
+        +viewBorrowHistory() List
+        +addToReadingList() void
+    }
+    
+    class Admin {
+        +addBook() Book
+        +updateBook() void
+        +deleteBook() void
+        +manageCopies() void
+        +viewMemberProfile() Member
+        +generateReport() Report
+        +viewOverdueBooks() List
+        +markPenaltyPaid() void
+        +deleteInactiveMember() void
+    }
+    
+    class UserSession {
+        +String sessionId
+        +Long userId
+        +Date createdAt
+        +Date lastAccessTime
+        +Boolean rememberMe
+        +Date expiresAt
+        +validateSession() Boolean
+        +refreshSession() void
+        +terminateSession() void
+    }
+    
+    class Notification {
+        +Long notificationId
+        +Long userId
+        +String type
+        +String title
+        +String message
+        +Date createdAt
+        +Boolean isRead
+        +Boolean emailSent
+        +markAsRead() void
+        +sendEmail() void
+    }
+    
+    class ActivityLog {
+        +Long logId
+        +Long adminId
+        +String action
+        +String targetEntity
+        +String details
+        +Date timestamp
+        +String ipAddress
+    }
+    
+    User <|-- Member
+    User <|-- Admin
+    User "1" --> "0..*" UserSession
+    User "1" --> "0..*" Notification
+    Admin "1" --> "0..*" ActivityLog

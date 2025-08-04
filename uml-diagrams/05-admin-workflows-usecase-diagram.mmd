@@ -1,0 +1,70 @@
+graph TD
+    Admin["👨‍💼 Admin"]
+    System["🖥️ System"]
+    Database["🗄️ Database"]
+    
+    %% Book Management
+    AddBook["Add New Book"]
+    UpdateBook["Update Book Information"]
+    DeleteBook["Delete Book"]
+    ManageCopies["Manage Book Copies"]
+    
+    %% Category Management
+    AddCategory["Add Book Category"]
+    UpdateCategory["Update Category"]
+    ManageCategories["Manage Dewey Categories"]
+    
+    %% Member Management
+    ViewMembers["View Member Profiles"]
+    ViewMemberHistory["View Member History"]
+    ManagePenalties["Manage Member Penalties"]
+    DeleteMember["Delete Inactive Member"]
+    MarkPenaltyPaid["Mark Penalty as Paid"]
+    
+    %% Reporting and Analytics
+    GenerateReports["Generate System Reports"]
+    ViewBorrowingStats["View Borrowing Statistics"]
+    ViewOverdueBooks["View Overdue Books"]
+    ViewMostBorrowed["View Most Borrowed Books"]
+    ViewMonthlyStats["View Monthly Statistics"]
+    
+    %% Activity Monitoring
+    ViewActivityLogs["View System Activity Logs"]
+    MonitorSystemHealth["Monitor System Health"]
+    
+    %% Notification Management
+    SendNotifications["Send System Notifications"]
+    ManageAlerts["Manage Member Alerts"]
+    
+    %% Admin Relationships
+    Admin --> AddBook
+    Admin --> UpdateBook
+    Admin --> DeleteBook
+    Admin --> ManageCopies
+    Admin --> AddCategory
+    Admin --> UpdateCategory
+    Admin --> ManageCategories
+    Admin --> ViewMembers
+    Admin --> ViewMemberHistory
+    Admin --> ManagePenalties
+    Admin --> DeleteMember
+    Admin --> MarkPenaltyPaid
+    Admin --> GenerateReports
+    Admin --> ViewBorrowingStats
+    Admin --> ViewOverdueBooks
+    Admin --> ViewMostBorrowed
+    Admin --> ViewMonthlyStats
+    Admin --> ViewActivityLogs
+    Admin --> MonitorSystemHealth
+    Admin --> SendNotifications
+    Admin --> ManageAlerts
+    
+    %% System Dependencies
+    AddBook -.-> System
+    UpdateBook -.-> System
+    DeleteBook -.-> System
+    ManageCopies -.-> System
+    GenerateReports -.-> Database
+    ViewBorrowingStats -.-> Database
+    ViewOverdueBooks -.-> Database
+    ViewActivityLogs -.-> Database
