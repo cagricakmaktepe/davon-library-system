@@ -5,8 +5,8 @@ classDiagram
         +String passwordHash
         +String firstName
         +String lastName
-        +Date registrationDate
-        +Date lastLoginDate
+        +LocalDateTime registrationDate
+        +LocalDateTime lastLoginDate
         +Boolean isActive
         +login() Boolean
         +logout() void
@@ -18,7 +18,7 @@ classDiagram
         +Integer currentBorrowCount
         +Integer currentReservationCount
         +Double totalPenalties
-        +Date lastWarningDate
+        +LocalDateTime lastWarningDate
         +borrowBook() BorrowRecord
         +reserveBook() Reservation
         +returnBook() ReturnRecord
@@ -43,10 +43,10 @@ classDiagram
     class UserSession {
         +String sessionId
         +Long userId
-        +Date createdAt
-        +Date lastAccessTime
+        +LocalDateTime createdAt
+        +LocalDateTime lastAccessTime
         +Boolean rememberMe
-        +Date expiresAt
+        +LocalDateTime expiresAt
         +validateSession() Boolean
         +refreshSession() void
         +terminateSession() void
@@ -58,7 +58,7 @@ classDiagram
         +String type
         +String title
         +String message
-        +Date createdAt
+        +LocalDateTime createdAt
         +Boolean isRead
         +Boolean emailSent
         +markAsRead() void
@@ -71,7 +71,7 @@ classDiagram
         +String action
         +String targetEntity
         +String details
-        +Date timestamp
+        +LocalDateTime timestamp
         +String ipAddress
     }
     
@@ -80,3 +80,7 @@ classDiagram
     User "1" --> "0..*" UserSession
     User "1" --> "0..*" Notification
     Admin "1" --> "0..*" ActivityLog
+    Member "1" --> "0..*" BorrowRecord
+    Member "1" --> "0..*" Reservation
+    Member "1" --> "0..*" ReadingListItem
+    User "1" --> "0..*" BookSearch
