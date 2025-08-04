@@ -2,27 +2,28 @@ classDiagram
     class BorrowRecord {
         +Long borrowId
         +Long memberId
-        +Long bookId
-        +Date borrowDate
-        +Date dueDate
-        +Date returnDate
+        +Long copyId
+        +LocalDateTime borrowDate
+        +LocalDateTime dueDate
+        +LocalDateTime returnDate
         +BorrowStatus status
         +Integer loanPeriodDays
         +Boolean isRenewed
         +Boolean isOverdue
-        +calculateDueDate() Date
+        +calculateDueDate() LocalDateTime
         +markAsReturned() void
         +checkOverdueStatus() Boolean
         +calculatePenalty() Double
+        +updateCopyStatus() void
     }
     
     class Reservation {
         +Long reservationId
         +Long memberId
         +Long bookId
-        +Date reservationDate
-        +Date availableDate
-        +Date expiryDate
+        +LocalDateTime reservationDate
+        +LocalDateTime availableDate
+        +LocalDateTime expiryDate
         +Integer queuePosition
         +ReservationStatus status
         +updateQueuePosition() void
@@ -36,8 +37,8 @@ classDiagram
         +Long memberId
         +Long borrowId
         +Double amount
-        +Date createdDate
-        +Date paidDate
+        +LocalDateTime createdDate
+        +LocalDateTime paidDate
         +PenaltyStatus status
         +String description
         +Integer overdueDays
@@ -51,8 +52,8 @@ classDiagram
         +Long renewalId
         +Long borrowId
         +Long memberId
-        +Date renewalDate
-        +Date newDueDate
+        +LocalDateTime renewalDate
+        +LocalDateTime newDueDate
         +Boolean isApproved
         +String rejectionReason
         +validateRenewal() Boolean
@@ -64,15 +65,15 @@ classDiagram
         +Long returnId
         +Long borrowId
         +Long memberId
-        +Long bookId
-        +Date returnDate
-        +Date originalDueDate
+        +Long copyId
+        +LocalDateTime returnDate
+        +LocalDateTime originalDueDate
         +Boolean isEarlyReturn
         +Boolean hasLateReturn
         +Double penaltyAmount
         +String condition
         +processReturn() void
-        +updateBookAvailability() void
+        +updateCopyStatus() void
         +calculateLateFee() Double
     }
     
@@ -89,5 +90,7 @@ classDiagram
     BorrowRecord "1" --> "0..*" Penalty
     Reservation "0..*" --> "1" Member
     BorrowRecord "0..*" --> "1" Member
-    BorrowRecord "0..*" --> "1" Book
     Penalty "1" --> "1" PenaltyCalculator
+    BorrowRecord "1" --> "1" BookCopy
+    ReturnRecord "1" --> "1" BookCopy
+    Reservation "1" --> "1" Book
