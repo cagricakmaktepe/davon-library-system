@@ -55,6 +55,18 @@ classDiagram
         +checkAvailability() Boolean
     }
     
+    class User {
+        +Long userId
+        +String username
+        +String email
+        +String firstName
+        +String lastName
+        +LocalDateTime registrationDate
+        +Boolean isActive
+        +getSearchHistory() List
+        +getReadingList() List
+    }
+    
     class BookSearch {
         +Long searchId
         +String searchTerm
@@ -67,11 +79,22 @@ classDiagram
         +searchByCategory() List
         +searchByKeyword() List
         +filterByAvailability() List
+        +getSearchResults() List
+    }
+    
+    class SearchResult {
+        +Long searchResultId
+        +Long searchId
+        +Long bookId
+        +Integer relevanceScore
+        +Integer resultOrder
+        +LocalDateTime foundDate
+        +getBookDetails() Book
     }
     
     class ReadingListItem {
         +Long itemId
-        +Long memberId
+        +Long userId
         +Long bookId
         +LocalDateTime addedDate
         +Integer priority
@@ -82,8 +105,19 @@ classDiagram
         +addNotes() void
     }
     
+    %% Ana kitap ilişkileri
     Book "1" --> "1" Author
     Book "1" --> "1" Publisher
     Book "1" --> "1" Category
     Book "1" --> "1..*" BookCopy
-    Book "1" --> "0..*" ReadingListItem
+    
+    %% Kullanıcı ilişkileri
+    User "1" --> "0..*" BookSearch
+    User "1" --> "0..*" ReadingListItem
+    
+    %% Arama sonuçları ilişkileri
+    BookSearch "1" --> "0..*" SearchResult
+    SearchResult "0..*" --> "1" Book
+    
+    %% Okuma listesi ilişkisi
+    ReadingListItem "0..*" --> "1" Book
