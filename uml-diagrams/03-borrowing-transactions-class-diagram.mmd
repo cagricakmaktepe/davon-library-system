@@ -1,5 +1,5 @@
 classDiagram
-    class BorrowRecord {
+    class Loan {
         +Long borrowId
         +Long memberId
         +Long copyId
@@ -85,12 +85,12 @@ classDiagram
         +processAccountDeletion() void
     }
     
-    BorrowRecord "1" --> "0..1" Renewal
-    BorrowRecord "1" --> "0..1" ReturnRecord
-    BorrowRecord "1" --> "0..*" Penalty
+    Loan "1" --> "0..1" Renewal
+    Loan "1" --> "0..1" ReturnRecord
+    Loan "1" --> "0..*" Penalty
     Reservation "0..*" --> "1" Member
-    BorrowRecord "0..*" --> "1" Member
+    Loan "0..*" --> "1" Member
     Penalty "1" --> "1" PenaltyCalculator
-    BorrowRecord "1" --> "1" BookCopy
+    Loan "1" --> "1" BookCopy
     ReturnRecord "1" --> "1" BookCopy
     Reservation "1" --> "1" Book

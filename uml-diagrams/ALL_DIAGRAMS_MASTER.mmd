@@ -24,7 +24,7 @@ classDiagram
         +Integer currentReservationCount
         +Double totalPenalties
         +Date lastWarningDate
-        +borrowBook() BorrowRecord
+        +borrowBook() Loan
         +reserveBook() Reservation
         +returnBook() ReturnRecord
         +renewBook() Renewal
@@ -174,7 +174,7 @@ classDiagram
 ## 3. Borrowing Transactions Class Diagram
 ```mermaid
 classDiagram
-    class BorrowRecord {
+    class Loan {
         +Long borrowId
         +Long memberId
         +Long bookId
@@ -259,12 +259,12 @@ classDiagram
         +processAccountDeletion() void
     }
     
-    BorrowRecord "1" --> "0..1" Renewal
-    BorrowRecord "1" --> "0..1" ReturnRecord
-    BorrowRecord "1" --> "0..*" Penalty
+    Loan "1" --> "0..1" Renewal
+    Loan "1" --> "0..1" ReturnRecord
+    Loan "1" --> "0..*" Penalty
     Reservation "0..*" --> "1" Member
-    BorrowRecord "0..*" --> "1" Member
-    BorrowRecord "0..*" --> "1" Book
+    Loan "0..*" --> "1" Member
+    Loan "0..*" --> "1" Book
     Penalty "1" --> "1" PenaltyCalculator
 ```
 

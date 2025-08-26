@@ -19,7 +19,7 @@ classDiagram
         +Integer currentReservationCount
         +Double totalPenalties
         +LocalDateTime lastWarningDate
-        +borrowBook() BorrowRecord
+        +borrowBook() Loan
         +reserveBook() Reservation
         +returnBook() ReturnRecord
         +renewBook() Renewal
@@ -80,7 +80,7 @@ classDiagram
     User "1" --> "0..*" UserSession
     User "1" --> "0..*" Notification
     Admin "1" --> "0..*" ActivityLog
-    Member "1" --> "0..*" BorrowRecord
+    Member "1" --> "0..*" Loan
     Member "1" --> "0..*" Reservation
     Member "1" --> "0..*" ReadingListItem
     User "1" --> "0..*" BookSearch

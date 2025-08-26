@@ -9,7 +9,7 @@ graph TD
     CheckBorrowLimit["Check Borrow Limit"]
     ValidateEligibility["Validate Member Eligibility"]
     CalculateDueDate["Calculate Due Date"]
-    CreateBorrowRecord["Create Borrow Record"]
+    CreateLoan["Create Loan"]
     UpdateBookAvailability["Update Book Availability"]
     
     %% Reservation Process
@@ -78,7 +78,7 @@ graph TD
     BorrowBook --> CheckBorrowLimit
     BorrowBook --> ValidateEligibility
     BorrowBook --> CalculateDueDate
-    BorrowBook --> CreateBorrowRecord
+    BorrowBook --> CreateLoan
     BorrowBook --> UpdateBookAvailability
     
     %% Reservation Process Flow

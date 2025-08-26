@@ -87,7 +87,7 @@ Book -> BookCopyManager (One-to-One)
 
 #### **Transaction Lifecycle**
 ```
-BorrowRecord (Core Entity)
+Loan (Core Entity)
 ├── Renewal (Optional)
 ├── ReturnRecord (Terminal)
 └── Penalty (Conditional)
