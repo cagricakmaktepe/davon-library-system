@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @ApplicationScoped
 public class InMemoryUserRepository implements UserRepository {
+
   private final Map<Long, User> idToUser = new ConcurrentHashMap<>();
   private final AtomicLong idSequence = new AtomicLong(1);
 
@@ -31,7 +32,9 @@ public class InMemoryUserRepository implements UserRepository {
 
   @Override
   public Optional<User> findByEmail(String email) {
-    return idToUser.values().stream().filter(u -> email != null && email.equalsIgnoreCase(u.getEmail())).findFirst();
+    return idToUser.values().stream()
+        .filter(u -> email != null && email.equals(u.getEmail()))
+        .findFirst();
   }
 
   @Override

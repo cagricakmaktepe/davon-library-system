@@ -2,8 +2,11 @@ package com.devon.library.backend.service;
 
 import com.devon.library.backend.model.Book;
 import com.devon.library.backend.model.Loan;
+import com.devon.library.backend.model.Reservation;
+import com.devon.library.backend.model.ReservationStatus;
 import com.devon.library.backend.repository.BookRepository;
 import com.devon.library.backend.repository.LoanRepository;
+import com.devon.library.backend.repository.ReservationRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.LocalDate;
@@ -18,6 +21,9 @@ public class LoanService {
 
   @Inject
   BookRepository bookRepository;
+
+  @Inject
+  ReservationRepository reservationRepository;
 
   public Loan checkout(Long userId, Long bookId) {
     Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
@@ -46,8 +52,21 @@ public class LoanService {
     loanRepository.save(loan);
 
     bookRepository.findById(loan.getBookId()).ifPresent(book -> {
-      book.setAvailableCopies(book.getAvailableCopies() + 1);
-      bookRepository.save(book);
+      // If there are waiting reservations, make the first AVAILABLE and keep stock reserved for them.
+      var waiting = reservationRepository.findByBookId(book.getId()).stream()
+          .filter(r -> r.getStatus() == ReservationStatus.WAITING)
+          .sorted(java.util.Comparator.comparing(Reservation::getQueuePosition))
+          .findFirst();
+      if (waiting.isPresent()) {
+        Reservation next = waiting.get();
+        next.setStatus(ReservationStatus.AVAILABLE);
+        next.setExpiryDate(java.time.LocalDate.now().plusDays(7));
+        reservationRepository.save(next);
+        // Do not increase availableCopies; hold the copy for the reservation claim window
+      } else {
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+        bookRepository.save(book);
+      }
     });
     return loan;
   }

@@ -11,6 +11,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/api/books")
@@ -44,8 +45,9 @@ public class BookResource {
   }
 
   @POST
-  public Book create(CreateBookRequest req) {
-    return bookService.addBook(req.title, req.isbn, req.pageCount, req.totalCopies, req.authorName);
+  public Response create(CreateBookRequest req) {
+    Book b = bookService.addBook(req.title, req.isbn, req.pageCount, req.totalCopies, req.authorName);
+    return Response.status(Response.Status.CREATED).entity(b).build();
   }
 }
 

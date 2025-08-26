@@ -22,6 +22,15 @@ export default function AppLayout({ children }) {
             <Link href="/users">Users</Link>
           </li>
           <li>
+            <Link href="/books">Books</Link>
+          </li>
+          <li>
+            <Link href="/loans">Loans</Link>
+          </li>
+          <li>
+            <Link href="/reservations">Reservations</Link>
+          </li>
+          <li>
             <Link href="/users/profile">Profile</Link>
           </li>
           <li>

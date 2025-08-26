@@ -1,5 +1,6 @@
 package com.devon.library.backend.repository.memory;
 
+import com.devon.library.backend.model.Author;
 import com.devon.library.backend.model.Book;
 import com.devon.library.backend.repository.BookRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,7 +21,14 @@ public class InMemoryBookRepository implements BookRepository {
   @Override
   public Book save(Book book) {
     if (book.getId() == null) {
-      book.setId(idSequence.getAndIncrement());
+      long id = idSequence.getAndIncrement();
+      book.setId(id);
+      // ensure author has an id too for consistency in UI listings
+      Author author = book.getAuthor();
+      if (author != null && author.getId() == null) {
+        author.setId(idSequence.getAndIncrement());
+        book.setAuthor(author);
+      }
     }
     idToBook.put(book.getId(), book);
     return book;
@@ -38,10 +46,15 @@ public class InMemoryBookRepository implements BookRepository {
 
   @Override
   public List<Book> searchByTitleOrAuthor(String query) {
-    final String q = query == null ? "" : query.toLowerCase();
+    if (query == null || query.isBlank()) {
+      return findAll();
+    }
+    final String q = query.toLowerCase();
     return idToBook.values().stream()
-        .filter(b -> (b.getTitle() != null && b.getTitle().toLowerCase().contains(q))
-            || (b.getAuthor() != null && b.getAuthor().getName() != null && b.getAuthor().getName().toLowerCase().contains(q)))
+        .filter(b ->
+            (b.getTitle() != null && b.getTitle().toLowerCase().contains(q)) ||
+            (b.getAuthor() != null && b.getAuthor().getName() != null && b.getAuthor().getName().toLowerCase().contains(q)) ||
+            (b.getIsbn() != null && b.getIsbn().toLowerCase().contains(q)))
         .collect(Collectors.toList());
   }
 

@@ -9,7 +9,7 @@ export const useUser = () => {
 };
 
 const initialUsers = [
-  { id: 1, name: 'Alice', email: 'alice@example.com', password: 'password123' },
+  { id: 1, name: 'cagri', email: 'cagri@example.com', password: 'cagri123' },
   { id: 2, name: 'Bob', email: 'bob@example.com', password: 'password123' },
 ];
 

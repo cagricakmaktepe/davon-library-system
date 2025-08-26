@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class InMemoryLoanRepository implements LoanRepository {
+
   private final Map<Long, Loan> idToLoan = new ConcurrentHashMap<>();
   private final AtomicLong idSequence = new AtomicLong(1);
 
@@ -32,12 +33,16 @@ public class InMemoryLoanRepository implements LoanRepository {
 
   @Override
   public List<Loan> findByUserId(Long userId) {
-    return idToLoan.values().stream().filter(l -> l.getUserId().equals(userId)).collect(Collectors.toList());
+    return idToLoan.values().stream()
+        .filter(l -> l.getUserId().equals(userId))
+        .collect(Collectors.toList());
   }
 
   @Override
   public List<Loan> findByBookId(Long bookId) {
-    return idToLoan.values().stream().filter(l -> l.getBookId().equals(bookId)).collect(Collectors.toList());
+    return idToLoan.values().stream()
+        .filter(l -> l.getBookId().equals(bookId))
+        .collect(Collectors.toList());
   }
 
   @Override

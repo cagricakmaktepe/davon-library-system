@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.devon.library.backend.model.Book;
 import com.devon.library.backend.repository.memory.InMemoryBookRepository;
 import com.devon.library.backend.repository.memory.InMemoryLoanRepository;
+import com.devon.library.backend.repository.memory.InMemoryReservationRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,12 @@ public class LoanServiceTest {
     loanService = new LoanService();
     InMemoryLoanRepository loanRepository = new InMemoryLoanRepository();
     bookRepository = new InMemoryBookRepository();
+    var reservationRepository = new InMemoryReservationRepository();
 
     // Manually inject (no CDI in unit test)
     loanService.loanRepository = loanRepository;
     loanService.bookRepository = bookRepository;
+    loanService.reservationRepository = reservationRepository;
 
     // Seed a book
     Book book = Book.builder().title("Test").isbn("X").pageCount(200).totalCopies(2).availableCopies(2).build();
