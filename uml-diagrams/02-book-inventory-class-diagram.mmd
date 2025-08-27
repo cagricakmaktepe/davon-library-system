@@ -1,0 +1,123 @@
+classDiagram
+    class Book {
+        +Long bookId
+        +String title
+        +Long authorId
+        +String description
+        +String language
+        +Integer pageCount
+        +Long publisherId
+        +LocalDateTime dateAdded
+        +LocalDateTime lastUpdated
+        +Long categoryId
+        +String isbn
+        +Boolean isActive
+        +calculateLoanPeriod() Integer
+        +getQueuePosition() Integer
+    }
+    
+    class Author {
+        +Long authorId
+        +String name
+        +String biography
+        +LocalDateTime birthDate
+        +LocalDateTime deathDate
+        +getBooksByAuthor() List
+    }
+    
+    class Publisher {
+        +Long publisherId
+        +String name
+        +String address
+        +String website
+        +getBooksByPublisher() List
+    }
+    
+    class Category {
+        +Long categoryId
+        +String deweyCode
+        +String categoryName
+        +String description
+        +LocalDateTime createdDate
+        +Boolean isActive
+        +validateDeweyCode() Boolean
+        +getBooksByCategory() List
+    }
+    
+    class BookCopy {
+        +Long copyId
+        +Long bookId
+        +String status
+        +LocalDateTime acquiredDate
+        +Boolean isAvailable
+        +String condition
+        +updateStatus() void
+        +checkAvailability() Boolean
+    }
+    
+    class User {
+        +Long userId
+        +String username
+        +String email
+        +String firstName
+        +String lastName
+        +LocalDateTime registrationDate
+        +Boolean isActive
+        +getSearchHistory() List
+        +getReadingList() List
+    }
+    
+    class BookSearch {
+        +Long searchId
+        +String searchTerm
+        +String searchType
+        +LocalDateTime searchDate
+        +Long userId
+        +Integer resultCount
+        +searchByTitle() List
+        +searchByAuthor() List
+        +searchByCategory() List
+        +searchByKeyword() List
+        +filterByAvailability() List
+        +getSearchResults() List
+    }
+    
+    class SearchResult {
+        +Long searchResultId
+        +Long searchId
+        +Long bookId
+        +Integer relevanceScore
+        +Integer resultOrder
+        +LocalDateTime foundDate
+        +getBookDetails() Book
+    }
+    
+    class ReadingListItem {
+        +Long itemId
+        +Long userId
+        +Long bookId
+        +LocalDateTime addedDate
+        +Integer priority
+        +String notes
+        +Boolean isCompleted
+        +updatePriority() void
+        +markAsCompleted() void
+        +addNotes() void
+    }
+    
+    %% Ana kitap ilişkileri
+    Book "1" --> "1" Author
+    Book "1" --> "1" Publisher
+    Book "1" --> "1" Category
+    Book "1" --> "1..*" BookCopy
+    
+    %% Kullanıcı ilişkileri
+    User "1" --> "0..*" BookSearch
+    User "1" --> "0..*" ReadingListItem
+    
+    %% Arama sonuçları ilişkileri
+    BookSearch "1" --> "0..*" SearchResult
+    SearchResult "0..*" --> "1" Book
+    
+    %% Okuma listesi ilişkisi
+    ReadingListItem "0..*" --> "1" Book

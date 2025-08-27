@@ -1,0 +1,341 @@
+# Davon Library Management System - All UML Diagrams
+# This file contains all diagrams in one place for easy reference
+
+## 1. User Management Class Diagram
+```mermaid
+classDiagram
+    class User {
+        +Long userId
+        +String email
+        +String passwordHash
+        +String firstName
+        +String lastName
+        +Date registrationDate
+        +Date lastLoginDate
+        +Boolean isActive
+        +login() Boolean
+        +logout() void
+        +updateProfile() void
+        +changePassword() Boolean
+    }
+    
+    class Member {
+        +Integer currentBorrowCount
+        +Integer currentReservationCount
+        +Double totalPenalties
+        +Date lastWarningDate
+        +borrowBook() Loan
+        +reserveBook() Reservation
+        +returnBook() ReturnRecord
+        +renewBook() Renewal
+        +payPenalty() void
+        +viewBorrowHistory() List
+        +addToReadingList() void
+    }
+    
+    class Admin {
+        +addBook() Book
+        +updateBook() void
+        +deleteBook() void
+        +manageCopies() void
+        +viewMemberProfile() Member
+        +generateReport() Report
+        +viewOverdueBooks() List
+        +markPenaltyPaid() void
+        +deleteInactiveMember() void
+    }
+    
+    class UserSession {
+        +String sessionId
+        +Long userId
+        +Date createdAt
+        +Date lastAccessTime
+        +Boolean rememberMe
+        +Date expiresAt
+        +validateSession() Boolean
+        +refreshSession() void
+        +terminateSession() void
+    }
+    
+    class Notification {
+        +Long notificationId
+        +Long userId
+        +String type
+        +String title
+        +String message
+        +Date createdAt
+        +Boolean isRead
+        +Boolean emailSent
+        +markAsRead() void
+        +sendEmail() void
+    }
+    
+    class ActivityLog {
+        +Long logId
+        +Long adminId
+        +String action
+        +String targetEntity
+        +String details
+        +Date timestamp
+        +String ipAddress
+    }
+    
+    User <|-- Member
+    User <|-- Admin
+    User "1" --> "0..*" UserSession
+    User "1" --> "0..*" Notification
+    Admin "1" --> "0..*" ActivityLog
+```
+
+## 2. Book Inventory Class Diagram
+```mermaid
+classDiagram
+    class Book {
+        +Long bookId
+        +String title
+        +String author
+        +String description
+        +String language
+        +Integer pageCount
+        +String publisher
+        +Date dateAdded
+        +Date lastUpdated
+        +Long categoryId
+        +Integer totalCopies
+        +Integer availableCopies
+        +String isbn
+        +Boolean isActive
+        +updateAvailability() void
+        +calculateLoanPeriod() Integer
+        +isAvailable() Boolean
+        +getQueuePosition() Integer
+    }
+    
+    class Category {
+        +Long categoryId
+        +String deweyCode
+        +String categoryName
+        +String description
+        +Date createdDate
+        +Boolean isActive
+        +validateDeweyCode() Boolean
+        +getBooksByCategory() List
+    }
+    
+    class BookCopyManager {
+        +Long managerId
+        +Long bookId
+        +Integer totalCopies
+        +Integer availableCopies
+        +Integer borrowedCopies
+        +Integer reservedCopies
+        +Date lastUpdated
+        +updateCopyCount() void
+        +borrowCopy() Boolean
+        +returnCopy() void
+        +calculateAvailability() Integer
+        +validateCopyCount() Boolean
+    }
+    
+    class BookSearch {
+        +Long searchId
+        +String searchTerm
+        +String searchType
+        +Date searchDate
+        +Long userId
+        +Integer resultCount
+        +searchByTitle() List
+        +searchByAuthor() List
+        +searchByCategory() List
+        +searchByKeyword() List
+        +filterByAvailability() List
+    }
+    
+    class ReadingListItem {
+        +Long itemId
+        +Long memberId
+        +Long bookId
+        +Date addedDate
+        +Integer priority
+        +String notes
+        +Boolean isCompleted
+        +updatePriority() void
+        +markAsCompleted() void
+        +addNotes() void
+    }
+    
+    Book "1" --> "1" Category
+    Book "1" --> "1" BookCopyManager
+    Book "1" --> "0..*" ReadingListItem
+    Book "1" --> "0..*" BookSearch
+    Category "1" --> "0..*" Book
+```
+
+## 3. Borrowing Transactions Class Diagram
+```mermaid
+classDiagram
+    class Loan {
+        +Long borrowId
+        +Long memberId
+        +Long bookId
+        +Date borrowDate
+        +Date dueDate
+        +Date returnDate
+        +BorrowStatus status
+        +Integer loanPeriodDays
+        +Boolean isRenewed
+        +Boolean isOverdue
+        +calculateDueDate() Date
+        +markAsReturned() void
+        +checkOverdueStatus() Boolean
+        +calculatePenalty() Double
+    }
+    
+    class Reservation {
+        +Long reservationId
+        +Long memberId
+        +Long bookId
+        +Date reservationDate
+        +Date availableDate
+        +Date expiryDate
+        +Integer queuePosition
+        +ReservationStatus status
+        +updateQueuePosition() void
+        +markAsAvailable() void
+        +markAsExpired() void
+        +calculateWaitTime() Integer
+    }
+    
+    class Penalty {
+        +Long penaltyId
+        +Long memberId
+        +Long borrowId
+        +Double amount
+        +Date createdDate
+        +Date paidDate
+        +PenaltyStatus status
+        +String description
+        +Integer overdueDays
+        +calculateDailyFine() Double
+        +markAsPaid() void
+        +sendWarning() void
+        +escalatePenalty() void
+    }
+    
+    class Renewal {
+        +Long renewalId
+        +Long borrowId
+        +Long memberId
+        +Date renewalDate
+        +Date newDueDate
+        +Boolean isApproved
+        +String rejectionReason
+        +validateRenewal() Boolean
+        +extendDueDate() void
+        +checkEligibility() Boolean
+    }
+    
+    class ReturnRecord {
+        +Long returnId
+        +Long borrowId
+        +Long memberId
+        +Long bookId
+        +Date returnDate
+        +Date originalDueDate
+        +Boolean isEarlyReturn
+        +Boolean hasLateReturn
+        +Double penaltyAmount
+        +String condition
+        +processReturn() void
+        +updateBookAvailability() void
+        +calculateLateFee() Double
+    }
+    
+    class PenaltyCalculator {
+        +calculateBasicPenalty() Double
+        +calculateProgressivePenalty() Double
+        +checkPenaltyThreshold() Boolean
+        +generateWarning() void
+        +processAccountDeletion() void
+    }
+    
+    Loan "1" --> "0..1" Renewal
+    Loan "1" --> "0..1" ReturnRecord
+    Loan "1" --> "0..*" Penalty
+    Reservation "0..*" --> "1" Member
+    Loan "0..*" --> "1" Member
+    Loan "0..*" --> "1" Book
+    Penalty "1" --> "1" PenaltyCalculator
+```
+
+## 4. Authentication Use Case Diagram
+```mermaid
+graph TD
+    Member["👤 Member"]
+    Admin["👨‍💼 Admin"]
+    System["🖥️ System"]
+    EmailService["📧 Email Service"]
+    
+    %% Registration Use Cases
+    Register["Register Account"]
+    ValidateEmail["Validate Email Format"]
+    ValidatePassword["Validate Password Requirements"]
+    CreateAccount["Create User Account"]
+    
+    %% Authentication Use Cases
+    Login["Login to System"]
+    ValidateCredentials["Validate User Credentials"]
+    CreateSession["Create User Session"]
+    RememberMe["Enable Remember Me"]
+    Logout["Logout from System"]
+    TerminateSession["Terminate Session"]
+    
+    %% Profile Management
+    ViewProfile["View Profile"]
+    UpdateProfile["Update Profile Information"]
+    ChangePassword["Change Password"]
+    
+    %% Session Management
+    CheckSession["Check Session Validity"]
+    RefreshSession["Refresh Session"]
+    SessionTimeout["Handle Session Timeout"]
+    
+    %% Relationships
+    Member --> Register
+    Member --> Login
+    Member --> ViewProfile
+    Member --> UpdateProfile
+    Member --> ChangePassword
+    Member --> Logout
+    
+    Admin --> Login
+    Admin --> ViewProfile
+    Admin --> UpdateProfile
+    Admin --> ChangePassword
+    Admin --> Logout
+    
+    Register --> ValidateEmail
+    Register --> ValidatePassword
+    Register --> CreateAccount
+    
+    Login --> ValidateCredentials
+    Login --> CreateSession
+    Login --> RememberMe
+    
+    Logout --> TerminateSession
+    
+    CreateSession --> CheckSession
+    CheckSession --> RefreshSession
+    CheckSession --> SessionTimeout
+    
+    %% System interactions
+    System -.-> ValidateEmail
+    System -.-> ValidatePassword
+    System -.-> CreateAccount
+    System -.-> ValidateCredentials
+    System -.-> CreateSession
+    System -.-> TerminateSession
+    System -.-> CheckSession
+    System -.-> RefreshSession
+    System -.-> SessionTimeout
+```

@@ -1,0 +1,106 @@
+graph TD
+    Member["👤 Member"]
+    Admin["👨‍💼 Admin"]
+    System["🖥️ System"]
+    NotificationService["📧 Notification Service"]
+    
+    %% Borrowing Process
+    BorrowBook["Borrow Book"]
+    CheckBorrowLimit["Check Borrow Limit"]
+    ValidateEligibility["Validate Member Eligibility"]
+    CalculateDueDate["Calculate Due Date"]
+    CreateLoan["Create Loan"]
+    UpdateBookAvailability["Update Book Availability"]
+    
+    %% Reservation Process
+    ReserveBook["Reserve Book"]
+    JoinReservationQueue["Join Reservation Queue"]
+    CheckReservationLimit["Check Reservation Limit"]
+    ViewQueuePosition["View Queue Position"]
+    NotifyBookAvailable["Notify When Book Available"]
+    ClaimReservedBook["Claim Reserved Book"]
+    
+    %% Return Process
+    ReturnBook["Return Book"]
+    ProcessReturn["Process Book Return"]
+    CheckReturnCondition["Check Book Condition"]
+    CalculateLateFee["Calculate Late Fee"]
+    UpdateAvailability["Update Book Availability"]
+    NotifyNextInQueue["Notify Next in Queue"]
+    
+    %% Renewal Process
+    RenewBook["Renew Book"]
+    CheckRenewalEligibility["Check Renewal Eligibility"]
+    ValidateNoQueue["Validate No Queue Waiting"]
+    ExtendDueDate["Extend Due Date"]
+    
+    %% Penalty Management
+    ViewPenalties["View Penalties"]
+    CalculatePenalty["Calculate Progressive Penalty"]
+    PayPenalty["Pay Penalty"]
+    MarkPenaltyPaid["Mark Penalty as Paid"]
+    SendPenaltyWarning["Send Penalty Warning"]
+    
+    %% Member Dashboard
+    ViewBorrowedBooks["View Borrowed Books"]
+    ViewBorrowHistory["View Borrow History"]
+    ViewDueDates["View Due Dates"]
+    ViewReservations["View Current Reservations"]
+    
+    %% Admin Oversight
+    ViewAllBorrows["View All Borrow Records"]
+    ViewOverdueItems["View Overdue Items"]
+    ManualReturn["Process Manual Return"]
+    AdjustPenalties["Adjust Penalties"]
+    
+    %% Member Use Cases
+    Member --> BorrowBook
+    Member --> ReserveBook
+    Member --> ReturnBook
+    Member --> RenewBook
+    Member --> ViewBorrowedBooks
+    Member --> ViewBorrowHistory
+    Member --> ViewDueDates
+    Member --> ViewReservations
+    Member --> ViewQueuePosition
+    Member --> ClaimReservedBook
+    Member --> ViewPenalties
+    Member --> PayPenalty
+    
+    %% Admin Use Cases
+    Admin --> ViewAllBorrows
+    Admin --> ViewOverdueItems
+    Admin --> ManualReturn
+    Admin --> AdjustPenalties
+    Admin --> MarkPenaltyPaid
+    
+    %% Borrow Process Flow
+    BorrowBook --> CheckBorrowLimit
+    BorrowBook --> ValidateEligibility
+    BorrowBook --> CalculateDueDate
+    BorrowBook --> CreateLoan
+    BorrowBook --> UpdateBookAvailability
+    
+    %% Reservation Process Flow
+    ReserveBook --> CheckReservationLimit
+    ReserveBook --> JoinReservationQueue
+    
+    %% Return Process Flow
+    ReturnBook --> ProcessReturn
+    ReturnBook --> CheckReturnCondition
+    ReturnBook --> CalculateLateFee
+    ReturnBook --> UpdateAvailability
+    ReturnBook --> NotifyNextInQueue
+    
+    %% Renewal Process Flow
+    RenewBook --> CheckRenewalEligibility
+    RenewBook --> ValidateNoQueue
+    RenewBook --> ExtendDueDate
+    
+    %% System Dependencies
+    System -.-> CalculateDueDate
+    System -.-> CalculateLateFee
+    System -.-> CalculatePenalty
+    System -.-> SendPenaltyWarning
+    NotificationService -.-> NotifyBookAvailable
+    NotificationService -.-> NotifyNextInQueue

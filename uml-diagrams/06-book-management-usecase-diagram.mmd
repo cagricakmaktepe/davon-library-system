@@ -1,0 +1,74 @@
+graph TD
+    Member["👤 Member"]
+    Admin["👨‍💼 Admin"]
+    System["🖥️ System"]
+    
+    %% Book Discovery and Search
+    BrowseBooks["Browse Books"]
+    SearchBooks["Search Books"]
+    SearchByTitle["Search by Title"]
+    SearchByAuthor["Search by Author"]
+    SearchByCategory["Search by Category"]
+    FilterAvailable["Filter Available Books"]
+    ViewBookDetails["View Book Details"]
+    
+    %% Reading List Management
+    AddToReadingList["Add to Reading List"]
+    RemoveFromReadingList["Remove from Reading List"]
+    ViewReadingList["View Reading List"]
+    ManageReadingList["Manage Reading List Priority"]
+    
+    %% Book Availability
+    CheckAvailability["Check Book Availability"]
+    ViewCopyStatus["View Copy Status"]
+    
+    %% Admin Book Management
+    CreateBook["Create New Book"]
+    EditBookInfo["Edit Book Information"]
+    UpdateBookDetails["Update Book Details"]
+    RemoveBook["Remove Book from System"]
+    SetCopyCount["Set Total Copy Count"]
+    UpdateAvailability["Update Available Copies"]
+    
+    %% Category Management
+    AssignCategory["Assign Book Category"]
+    CreateCategory["Create New Category"]
+    ManageDeweySystem["Manage Dewey Decimal System"]
+    
+    %% Member Use Cases
+    Member --> BrowseBooks
+    Member --> SearchBooks
+    Member --> ViewBookDetails
+    Member --> AddToReadingList
+    Member --> RemoveFromReadingList
+    Member --> ViewReadingList
+    Member --> ManageReadingList
+    Member --> CheckAvailability
+    
+    %% Admin Use Cases
+    Admin --> CreateBook
+    Admin --> EditBookInfo
+    Admin --> UpdateBookDetails
+    Admin --> RemoveBook
+    Admin --> SetCopyCount
+    Admin --> UpdateAvailability
+    Admin --> AssignCategory
+    Admin --> CreateCategory
+    Admin --> ManageDeweySystem
+    Admin --> BrowseBooks
+    Admin --> SearchBooks
+    Admin --> ViewBookDetails
+    Admin --> ViewCopyStatus
+    
+    %% Search Extensions
+    SearchBooks --> SearchByTitle
+    SearchBooks --> SearchByAuthor
+    SearchBooks --> SearchByCategory
+    SearchBooks --> FilterAvailable
+    
+    %% System Dependencies
+    BrowseBooks -.-> System
+    SearchBooks -.-> System
+    CheckAvailability -.-> System
+    CreateBook -.-> System
+    UpdateAvailability -.-> System

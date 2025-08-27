@@ -1,0 +1,10 @@
+---
+description: "Project-specific AI behavior rules"
+globs:
+  - "**/*"
+alwaysApply: true
+rules:
+  - "Before responding, correct my English if needed."
+  - "When giving the response, always use basic English."
+
+---

@@ -1,0 +1,96 @@
+classDiagram
+    class Loan {
+        +Long borrowId
+        +Long memberId
+        +Long copyId
+        +LocalDateTime borrowDate
+        +LocalDateTime dueDate
+        +LocalDateTime returnDate
+        +BorrowStatus status
+        +Integer loanPeriodDays
+        +Boolean isRenewed
+        +Boolean isOverdue
+        +calculateDueDate() LocalDateTime
+        +markAsReturned() void
+        +checkOverdueStatus() Boolean
+        +calculatePenalty() Double
+        +updateCopyStatus() void
+    }
+    
+    class Reservation {
+        +Long reservationId
+        +Long memberId
+        +Long bookId
+        +LocalDateTime reservationDate
+        +LocalDateTime availableDate
+        +LocalDateTime expiryDate
+        +Integer queuePosition
+        +ReservationStatus status
+        +updateQueuePosition() void
+        +markAsAvailable() void
+        +markAsExpired() void
+        +calculateWaitTime() Integer
+    }
+    
+    class Penalty {
+        +Long penaltyId
+        +Long memberId
+        +Long borrowId
+        +Double amount
+        +LocalDateTime createdDate
+        +LocalDateTime paidDate
+        +PenaltyStatus status
+        +String description
+        +Integer overdueDays
+        +calculateDailyFine() Double
+        +markAsPaid() void
+        +sendWarning() void
+        +escalatePenalty() void
+    }
+    
+    class Renewal {
+        +Long renewalId
+        +Long borrowId
+        +Long memberId
+        +LocalDateTime renewalDate
+        +LocalDateTime newDueDate
+        +Boolean isApproved
+        +String rejectionReason
+        +validateRenewal() Boolean
+        +extendDueDate() void
+        +checkEligibility() Boolean
+    }
+    
+    class ReturnRecord {
+        +Long returnId
+        +Long borrowId
+        +Long memberId
+        +Long copyId
+        +LocalDateTime returnDate
+        +LocalDateTime originalDueDate
+        +Boolean isEarlyReturn
+        +Boolean hasLateReturn
+        +Double penaltyAmount
+        +String condition
+        +processReturn() void
+        +updateCopyStatus() void
+        +calculateLateFee() Double
+    }
+    
+    class PenaltyCalculator {
+        +calculateBasicPenalty() Double
+        +calculateProgressivePenalty() Double
+        +checkPenaltyThreshold() Boolean
+        +generateWarning() void
+        +processAccountDeletion() void
+    }
+    
+    Loan "1" --> "0..1" Renewal
+    Loan "1" --> "0..1" ReturnRecord
+    Loan "1" --> "0..*" Penalty
+    Reservation "0..*" --> "1" Member
+    Loan "0..*" --> "1" Member
+    Penalty "1" --> "1" PenaltyCalculator
+    Loan "1" --> "1" BookCopy
+    ReturnRecord "1" --> "1" BookCopy
+    Reservation "1" --> "1" Book
