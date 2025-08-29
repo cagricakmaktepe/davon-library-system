@@ -27,6 +27,17 @@ public class LoanService {
 
   public Loan checkout(Long userId, Long bookId) {
     Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+    // Block duplicate active loan for the same book by the same user
+    boolean alreadyBorrowed = loanRepository.findByUserId(userId).stream()
+        .anyMatch(l -> l.getBookId().equals(bookId) && !l.isReturned());
+    if (alreadyBorrowed) {
+      throw new IllegalStateException("User already has an active loan for this book");
+    }
+    // Simple borrow limit per user: max 5 active loans
+    long activeLoans = loanRepository.findByUserId(userId).stream().filter(l -> !l.isReturned()).count();
+    if (activeLoans >= 5) {
+      throw new IllegalStateException("Borrow limit reached (5)");
+    }
     if (book.getAvailableCopies() <= 0) {
       throw new IllegalStateException("No available copies for checkout");
     }
@@ -77,6 +88,27 @@ public class LoanService {
 
   public List<Loan> loansByUser(Long userId) {
     return loanRepository.findByUserId(userId);
+  }
+
+  public List<Loan> findAll() {
+    return loanRepository.findAll();
+  }
+
+  public Loan renew(Long loanId) {
+    Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new IllegalArgumentException("Loan not found"));
+    if (loan.isReturned()) {
+      return loan;
+    }
+    Book book = bookRepository.findById(loan.getBookId()).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+    // Renewal eligibility: if there is someone waiting (WAITING or AVAILABLE not claimed), deny
+    boolean queueExists = reservationRepository.findByBookId(book.getId()).stream()
+        .anyMatch(r -> r.getStatus() == ReservationStatus.WAITING || r.getStatus() == ReservationStatus.AVAILABLE);
+    if (queueExists) {
+      throw new IllegalStateException("Cannot renew: reservation queue exists");
+    }
+    int loanDays = book.getPageCount() > 300 ? 21 : 14;
+    loan.setDueDate(loan.getDueDate().plusDays(loanDays));
+    return loanRepository.save(loan);
   }
 }
 

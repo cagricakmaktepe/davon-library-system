@@ -10,7 +10,7 @@ export default function LoansPage() {
 
   const loadLoans = async () => {
     if (!currentUser) return;
-    const res = await fetch(`http://localhost:8080/api/loans/user/${currentUser.id}`);
+    const res = await fetch(`http://localhost:8080/api/loans/user/${currentUser.backendId ?? currentUser.id}`);
     const data = await res.json();
     setLoans(data);
   };
@@ -18,7 +18,7 @@ export default function LoansPage() {
   useEffect(() => {
     loadLoans();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser?.id]);
+  }, [currentUser?.backendId, currentUser?.id]);
 
   const returnLoan = async (loanId) => {
     const res = await fetch(`http://localhost:8080/api/loans/${loanId}/return`, { method: 'POST' });

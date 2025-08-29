@@ -3,6 +3,7 @@ package com.devon.library.backend.service;
 import com.devon.library.backend.model.Book;
 import com.devon.library.backend.model.Reservation;
 import com.devon.library.backend.model.ReservationStatus;
+import com.devon.library.backend.repository.LoanRepository;
 import com.devon.library.backend.repository.BookRepository;
 import com.devon.library.backend.repository.ReservationRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,8 +23,17 @@ public class ReservationService {
   @Inject
   BookRepository bookRepository;
 
+  @Inject
+  LoanRepository loanRepository;
+
   public Reservation createReservation(Long userId, Long bookId) {
     Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+    // Block reservation if user already has an active loan for the book
+    boolean alreadyBorrowed = loanRepository.findByUserId(userId).stream()
+        .anyMatch(l -> l.getBookId().equals(bookId) && !l.isReturned());
+    if (alreadyBorrowed) {
+      throw new IllegalStateException("User already borrowed this book");
+    }
     // Enforce: reserve only if no copies are available
     if (book.getAvailableCopies() > 0) {
       throw new IllegalStateException("Copies are available; please checkout instead of reserving");

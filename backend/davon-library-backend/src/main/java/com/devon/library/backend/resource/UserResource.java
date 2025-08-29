@@ -2,6 +2,7 @@ package com.devon.library.backend.resource;
 
 import com.devon.library.backend.model.User;
 import com.devon.library.backend.service.UserService;
+import com.devon.library.backend.model.Role;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -38,11 +39,13 @@ public class UserResource {
   public static class CreateUserRequest {
     public String name;
     public String email;
+    public String role; // optional: MEMBER or ADMIN
   }
 
   @POST
   public Response create(CreateUserRequest req) {
-    User u = userService.createUser(req.name, req.email);
+    Role role = (req.role == null || req.role.isBlank()) ? Role.MEMBER : Role.valueOf(req.role.toUpperCase());
+    User u = userService.createUser(req.name, req.email, role);
     return Response.status(Response.Status.CREATED).entity(u).build();
   }
 }

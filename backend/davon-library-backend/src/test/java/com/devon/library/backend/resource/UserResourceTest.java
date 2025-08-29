@@ -23,6 +23,7 @@ public class UserResourceTest {
     var req = new java.util.HashMap<String, Object>();
     req.put("name", "Alice");
     req.put("email", "alice@example.com");
+    req.put("role", "MEMBER");
 
     long id = given()
         .contentType("application/json")
@@ -38,6 +39,22 @@ public class UserResourceTest {
         .then()
         .statusCode(200)
         .body("email", equalTo("alice@example.com"));
+  }
+
+  @Test
+  void createSecondMember_shouldSucceed() {
+    var req = new java.util.HashMap<String, Object>();
+    req.put("name", "Second Member");
+    req.put("email", "second.member@example.com");
+    req.put("role", "MEMBER");
+
+    given()
+        .contentType("application/json")
+        .body(req)
+        .when().post("/api/users")
+        .then()
+        .statusCode(201)
+        .body("email", equalTo("second.member@example.com"));
   }
 }
 

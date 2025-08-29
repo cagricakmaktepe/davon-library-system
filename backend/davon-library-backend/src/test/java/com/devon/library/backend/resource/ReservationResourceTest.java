@@ -11,10 +11,23 @@ public class ReservationResourceTest {
 
   @Test
   void createAndCancel_shouldRenumberQueue() {
+    var adminReq = new java.util.HashMap<String, Object>();
+    adminReq.put("name", "Admin1");
+    adminReq.put("email", "admin1@example.com");
+    adminReq.put("role", "ADMIN");
+    long adminId = given().contentType("application/json").body(adminReq).when().post("/api/users").then().statusCode(201).extract().jsonPath().getLong("id");
+
     var userReq = new java.util.HashMap<String, Object>();
     userReq.put("name", "Carol");
     userReq.put("email", "carol@example.com");
+    userReq.put("role", "MEMBER");
     long userId = given().contentType("application/json").body(userReq).when().post("/api/users").then().statusCode(201).extract().jsonPath().getLong("id");
+
+    var userReq2 = new java.util.HashMap<String, Object>();
+    userReq2.put("name", "Dave");
+    userReq2.put("email", "dave@example.com");
+    userReq2.put("role", "MEMBER");
+    long userId2 = given().contentType("application/json").body(userReq2).when().post("/api/users").then().statusCode(201).extract().jsonPath().getLong("id");
 
     var bookReq = new java.util.HashMap<String, Object>();
     bookReq.put("title", "Reserved");
@@ -22,6 +35,7 @@ public class ReservationResourceTest {
     bookReq.put("pageCount", 100);
     bookReq.put("totalCopies", 1);
     bookReq.put("authorName", "Auth");
+    bookReq.put("actorUserId", adminId);
     long bookId = given().contentType("application/json").body(bookReq).when().post("/api/books").then().statusCode(201).extract().jsonPath().getLong("id");
 
     // Make the book unavailable by checking it out
@@ -31,12 +45,19 @@ public class ReservationResourceTest {
     given().contentType("application/json").body(checkout).when().post("/api/loans").then().statusCode(201);
 
     var rreq1 = new java.util.HashMap<String, Object>();
-    rreq1.put("userId", userId);
+    rreq1.put("userId", userId2);
     rreq1.put("bookId", bookId);
     long r1 = given().contentType("application/json").body(rreq1).when().post("/api/reservations").then().statusCode(201).body("queuePosition", equalTo(1)).extract().jsonPath().getLong("id");
 
+    // Create a third member for a second reservation
+    var userReq3 = new java.util.HashMap<String, Object>();
+    userReq3.put("name", "Eve");
+    userReq3.put("email", "eve@example.com");
+    userReq3.put("role", "MEMBER");
+    long userId3 = given().contentType("application/json").body(userReq3).when().post("/api/users").then().statusCode(201).extract().jsonPath().getLong("id");
+
     var rreq2 = new java.util.HashMap<String, Object>();
-    rreq2.put("userId", userId + 1);
+    rreq2.put("userId", userId3);
     rreq2.put("bookId", bookId);
     long r2 = given().contentType("application/json").body(rreq2).when().post("/api/reservations").then().statusCode(201).body("queuePosition", equalTo(2)).extract().jsonPath().getLong("id");
 

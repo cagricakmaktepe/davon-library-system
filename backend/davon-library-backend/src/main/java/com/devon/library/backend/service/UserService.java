@@ -2,6 +2,7 @@ package com.devon.library.backend.service;
 
 import com.devon.library.backend.model.User;
 import com.devon.library.backend.repository.UserRepository;
+import com.devon.library.backend.model.Role;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.List;
@@ -14,7 +15,11 @@ public class UserService {
   UserRepository userRepository;
 
   public User createUser(String name, String email) {
-    User user = User.builder().name(name).email(email).build();
+    return createUser(name, email, Role.MEMBER);
+  }
+
+  public User createUser(String name, String email, Role role) {
+    User user = User.builder().name(name).email(email).role(role == null ? Role.MEMBER : role).build();
     return userRepository.save(user);
   }
 
