@@ -4,7 +4,6 @@ import com.devon.library.backend.model.Author;
 import com.devon.library.backend.model.Book;
 import com.devon.library.backend.repository.BookRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 
 import java.util.ArrayList;
 import java.util.List;
