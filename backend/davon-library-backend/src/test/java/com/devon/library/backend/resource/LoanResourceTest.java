@@ -11,6 +11,12 @@ public class LoanResourceTest {
 
   @Test
   void checkoutAndReturn_flowShouldWork() {
+    var adminReq = new java.util.HashMap<String, Object>();
+    adminReq.put("name", "Admin1");
+    adminReq.put("email", "admin1@example.com");
+    adminReq.put("role", "ADMIN");
+    long adminId = given().contentType("application/json").body(adminReq).when().post("/api/users").then().statusCode(201).extract().jsonPath().getLong("id");
+
     var userReq = new java.util.HashMap<String, Object>();
     userReq.put("name", "Bob");
     userReq.put("email", "bob@example.com");
@@ -22,6 +28,7 @@ public class LoanResourceTest {
     bookReq.put("pageCount", 100);
     bookReq.put("totalCopies", 1);
     bookReq.put("authorName", "Auth");
+    bookReq.put("actorUserId", adminId);
     long bookId = given().contentType("application/json").body(bookReq).when().post("/api/books").then().statusCode(201).extract().jsonPath().getLong("id");
 
     var checkout = new java.util.HashMap<String, Object>();

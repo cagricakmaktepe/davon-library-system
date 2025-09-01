@@ -6,16 +6,20 @@ import { useUser } from '@/context/UserContext';
 import AppLayout from '@/components/AppLayout';
 
 export default function UsersPage() {
-  const { users, currentUser } = useUser();
+  const { users, currentUser, isAdmin } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     if (!currentUser) {
       router.push('/users/login');
+      return;
     }
-  }, [currentUser, router]);
+    if (!isAdmin()) {
+      router.push('/member');
+    }
+  }, [currentUser, isAdmin, router]);
   
-  if (!currentUser) {
+  if (!currentUser || !isAdmin()) {
     return null;
   }
 

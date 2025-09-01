@@ -23,12 +23,16 @@ export default function LoginPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const user = loginUser(formData.email, formData.password);
+    const user = await loginUser(formData.email, formData.password);
     if (user) {
-      router.push('/users/profile');
+      if (user.role === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/member');
+      }
     } else {
       setError('Invalid email or password.');
     }

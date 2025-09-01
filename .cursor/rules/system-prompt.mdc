@@ -4,7 +4,5 @@ globs:
   - "**/*"
 alwaysApply: true
 rules:
-  - "Before responding, correct my English if needed."
-  - "When giving the response, always use basic English."
-
+  - "Before responding, first correct the user's English. Then reply in clear, simple English."
 ---

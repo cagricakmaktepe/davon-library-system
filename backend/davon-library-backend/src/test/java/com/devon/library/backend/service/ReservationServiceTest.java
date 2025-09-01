@@ -6,6 +6,7 @@ import com.devon.library.backend.model.Book;
 import com.devon.library.backend.model.Reservation;
 import com.devon.library.backend.model.ReservationStatus;
 import com.devon.library.backend.repository.memory.InMemoryBookRepository;
+import com.devon.library.backend.repository.memory.InMemoryLoanRepository;
 import com.devon.library.backend.repository.memory.InMemoryReservationRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,9 +22,11 @@ public class ReservationServiceTest {
     reservationService = new ReservationService();
     bookRepository = new InMemoryBookRepository();
     var reservationRepository = new InMemoryReservationRepository();
+    var loanRepository = new InMemoryLoanRepository();
 
     reservationService.bookRepository = bookRepository;
     reservationService.reservationRepository = reservationRepository;
+    reservationService.loanRepository = loanRepository;
 
     // Seed a book with zero available copies
     Book book = Book.builder().title("Unavailable Book").isbn("R1").pageCount(100).totalCopies(1).availableCopies(0).build();

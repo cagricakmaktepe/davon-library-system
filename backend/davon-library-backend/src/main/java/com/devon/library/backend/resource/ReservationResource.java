@@ -3,6 +3,8 @@ package com.devon.library.backend.resource;
 import com.devon.library.backend.model.Reservation;
 import com.devon.library.backend.service.LoanService;
 import com.devon.library.backend.service.ReservationService;
+import com.devon.library.backend.service.UserService;
+import com.devon.library.backend.model.Role;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -25,6 +27,9 @@ public class ReservationResource {
   @Inject
   LoanService loanService;
 
+  @Inject
+  UserService userService;
+
   public static class CreateReservationRequest {
     public Long userId;
     public Long bookId;
@@ -32,6 +37,10 @@ public class ReservationResource {
 
   @POST
   public Response create(CreateReservationRequest req) {
+    var actor = userService.getUser(req.userId).orElse(null);
+    if (actor == null || actor.getRole() != Role.MEMBER) {
+      return Response.status(Response.Status.FORBIDDEN).entity("Member role required to reserve").build();
+    }
     Reservation r = reservationService.createReservation(req.userId, req.bookId);
     return Response.status(Response.Status.CREATED).entity(r).build();
   }
@@ -43,6 +52,10 @@ public class ReservationResource {
   @POST
   @Path("/{id}/claim")
   public Response claim(@PathParam("id") Long id, ClaimRequest req) {
+    var actor = userService.getUser(req.userId).orElse(null);
+    if (actor == null || actor.getRole() != Role.MEMBER) {
+      return Response.status(Response.Status.FORBIDDEN).entity("Member role required to claim").build();
+    }
     // Minimal: reuse checkout while holding copy reserved by AVAILABLE reservation
     var loan = loanService.checkout(req.userId, reservationService.getReservation(id).orElseThrow().getBookId());
     // Mark reservation completed
